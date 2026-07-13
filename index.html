@@ -35,10 +35,16 @@
             <div class="kicker">Yönetim Bilgi Merkezi</div>
             <h1>Veriyi anlamlandırın.<span>Kararı güçlendirin.</span></h1>
             <p>Kurumsal raporlarınıza güvenli, sade ve etkileyici bir yönetim deneyimiyle erişin.</p>
-            <div class="logo-orbit">
-              <div class="ring r1"></div>
-              <div class="ring r2"></div>
-              <div class="ring r3"></div>
+            <div class="logo-orbit" aria-label="ADG Insight hareketli logosu">
+              <div class="ring r1">
+                <span class="electron e1"></span>
+              </div>
+              <div class="ring r2">
+                <span class="electron e2"></span>
+              </div>
+              <div class="ring r3">
+                <span class="electron e3"></span>
+              </div>
               <div class="core"><strong>ADG</strong><small>INSIGHT</small></div>
             </div>
           </div>
@@ -62,15 +68,94 @@
       </section>
 
       <section id="portalScreen" class="screen">
-        <div class="portal-wrap">
-          <div class="page-head">
-            <div>
-              <div class="kicker">Müşteri Portalı</div>
-              <h2>Firma seçiniz</h2>
-              <p>Yalnızca hesabınıza tanımlanan firmalar gösterilir.</p>
+        <div id="companySelectionView" class="company-selection-view">
+          <div class="company-selection-wrap">
+            <div class="company-selection-head">
+              <div>
+                <div class="kicker">Erişim Alanınız</div>
+                <h2>Firma seçiniz</h2>
+                <p>Devam etmek için çalışmak istediğiniz firmayı seçin.</p>
+              </div>
             </div>
+            <div id="companySelectionGrid" class="company-selection-grid"></div>
           </div>
-          <div id="companyGrid" class="card-grid"></div>
+        </div>
+
+        <div id="portalDashboard" class="portal-dashboard hidden">
+          <aside class="portal-sidebar">
+            <div class="portal-sidebar-title">
+              <span id="selectedCompanyMiniLogo" class="portal-mini-logo">ADG</span>
+              <div>
+                <strong id="selectedCompanySidebarName">Firma</strong>
+                <small>Karar destek merkezi</small>
+              </div>
+            </div>
+
+            <nav class="portal-nav">
+              <button class="portal-nav-btn active" data-portal-view="home">Genel Bakış</button>
+              <button class="portal-nav-btn" data-portal-view="reports">Tüm Raporlar</button>
+              <button class="portal-nav-btn" data-portal-view="favorites">Favoriler</button>
+              <button class="portal-nav-btn" data-portal-view="recent">Son Açılanlar</button>
+              <button class="portal-nav-btn" data-portal-view="library">Kütüphane</button>
+            </nav>
+
+            <div class="portal-sidebar-footer">
+              <button id="changeCompanyBtn" class="change-company-btn">← Firma Değiştir</button>
+              <div><span class="status-dot"></span>Sistem aktif</div>
+            </div>
+          </aside>
+
+          <section class="portal-main">
+            <div class="portal-toolbar">
+              <div>
+                <div id="selectedCompanyKicker" class="kicker">Firma Dashboard</div>
+                <h2 id="portalTitle">Genel Bakış</h2>
+              </div>
+
+              <div class="portal-toolbar-actions">
+                <div class="portal-search-wrap">
+                  <span>⌕</span>
+                  <input id="portalSearch" placeholder="Rapor veya kategori ara...">
+                </div>
+                <button id="topChangeCompanyBtn" class="btn">Firma Değiştir</button>
+              </div>
+            </div>
+
+            <div id="portalHero" class="portal-hero">
+              <div>
+                <span class="hero-badge">ADG INSIGHT</span>
+                <h1 id="portalHeroTitle">Veriyi görün.<br>Kararı hızlandırın.</h1>
+                <p id="portalHeroText">Yetkili olduğunuz tüm raporlara, dokümanlara ve kurumsal içeriklere tek merkezden ulaşın.</p>
+              </div>
+              <div class="portal-hero-visual">
+                <div class="hero-chart">
+                  <span style="height:36%"></span>
+                  <span style="height:54%"></span>
+                  <span style="height:42%"></span>
+                  <span style="height:78%"></span>
+                  <span style="height:66%"></span>
+                  <span style="height:92%"></span>
+                </div>
+              </div>
+            </div>
+
+            <div id="portalStats" class="portal-stats"></div>
+
+            <div id="companyProfileCard" class="company-profile-card hidden"></div>
+
+            <div class="portal-section-head">
+              <div>
+                <h3 id="portalSectionTitle">Öne Çıkan Raporlar</h3>
+                <p id="portalSectionSubtitle">En sık kullanılan ve son eklenen içerikler</p>
+              </div>
+              <div class="portal-view-buttons">
+                <button id="gridViewBtn" class="view-btn active" title="Kart görünümü">▦</button>
+                <button id="listViewBtn" class="view-btn" title="Liste görünümü">☷</button>
+              </div>
+            </div>
+
+            <div id="portalContentGrid" class="dashboard-report-grid"></div>
+          </section>
         </div>
       </section>
 
@@ -81,6 +166,7 @@
             <button class="nav-btn" data-page="companies">Firmalar</button>
             <button class="nav-btn" data-page="users">Kullanıcılar</button>
             <button class="nav-btn" data-page="reports">Raporlar</button>
+            <button class="nav-btn" data-page="library">Kütüphane</button>
             <button class="nav-btn" data-page="roles">Roller</button>
             <button class="nav-btn" data-page="backup">Yedekleme</button>
             <button id="portalReturnBtn" class="nav-btn">Portala Dön</button>
@@ -109,6 +195,28 @@
                 <button id="newCompanyBtn" class="btn btn-primary">+ Yeni Firma</button>
               </div>
 
+              <div class="library-explorer-shell">
+                <aside class="library-folder-pane">
+                  <div class="library-pane-title">Klasörler</div>
+                  <button class="library-folder-btn active" data-folder="">Tüm İçerikler</button>
+                  <div id="libraryFolderList"></div>
+                </aside>
+                <section class="library-explorer-main">
+                  <div class="library-explorer-toolbar">
+                    <div>
+                      <strong id="libraryExplorerTitle">Tüm İçerikler</strong>
+                      <small id="libraryExplorerCount">0 içerik</small>
+                    </div>
+                    <div class="library-view-toggle">
+                      <button id="libraryGridModeBtn" class="view-btn active">▦</button>
+                      <button id="libraryListModeBtn" class="view-btn">☷</button>
+                    </div>
+                  </div>
+                  <div id="libraryExplorerGrid" class="library-explorer-grid"></div>
+                  <div id="libraryPreviewPane" class="library-preview-pane hidden"></div>
+                </section>
+              </div>
+
               <div class="admin-grid">
                 <div class="panel">
                   <h3 id="companyFormTitle">Yeni Firma</h3>
@@ -123,8 +231,43 @@
                   <label>Kurumsal renk</label>
                   <input id="companyColor" class="input" type="color" value="#19b77d">
 
+                  <div class="form-row">
+                    <div>
+                      <label>Vergi numarası</label>
+                      <input id="companyTaxNo" class="input">
+                    </div>
+                    <div>
+                      <label>Vergi dairesi</label>
+                      <input id="companyTaxOffice" class="input">
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div>
+                      <label>Telefon</label>
+                      <input id="companyPhone" class="input" type="tel">
+                    </div>
+                    <div>
+                      <label>E-posta</label>
+                      <input id="companyEmail" class="input" type="email">
+                    </div>
+                  </div>
+
+                  <label>Web sitesi</label>
+                  <input id="companyWebsite" class="input" placeholder="https://...">
+
+                  <label>Adres</label>
+                  <textarea id="companyAddress" class="input" rows="3"></textarea>
+
                   <label>Logo bağlantısı</label>
-                  <input id="companyLogo" class="input">
+                  <input id="companyLogo" class="input" placeholder="https://...">
+
+                  <label>veya bilgisayardan logo seç</label>
+                  <input id="companyLogoFile" class="input" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml">
+
+                  <div id="companyLogoPreview" class="logo-preview">
+                    <span class="note">Logo önizlemesi</span>
+                  </div>
 
                   <div class="form-actions">
                     <button id="saveCompanyBtn" class="btn btn-primary">Kaydet</button>
@@ -145,6 +288,28 @@
               <div class="page-head">
                 <div><div class="kicker">Kullanıcı Yönetimi</div><h2>Kullanıcılar</h2></div>
                 <button id="newUserBtn" class="btn btn-primary">+ Yeni Kullanıcı</button>
+              </div>
+
+              <div class="library-explorer-shell">
+                <aside class="library-folder-pane">
+                  <div class="library-pane-title">Klasörler</div>
+                  <button class="library-folder-btn active" data-folder="">Tüm İçerikler</button>
+                  <div id="libraryFolderList"></div>
+                </aside>
+                <section class="library-explorer-main">
+                  <div class="library-explorer-toolbar">
+                    <div>
+                      <strong id="libraryExplorerTitle">Tüm İçerikler</strong>
+                      <small id="libraryExplorerCount">0 içerik</small>
+                    </div>
+                    <div class="library-view-toggle">
+                      <button id="libraryGridModeBtn" class="view-btn active">▦</button>
+                      <button id="libraryListModeBtn" class="view-btn">☷</button>
+                    </div>
+                  </div>
+                  <div id="libraryExplorerGrid" class="library-explorer-grid"></div>
+                  <div id="libraryPreviewPane" class="library-preview-pane hidden"></div>
+                </section>
               </div>
 
               <div class="admin-grid">
@@ -189,6 +354,28 @@
                 <button id="newReportBtn" class="btn btn-primary">+ Yeni Rapor</button>
               </div>
 
+              <div class="library-explorer-shell">
+                <aside class="library-folder-pane">
+                  <div class="library-pane-title">Klasörler</div>
+                  <button class="library-folder-btn active" data-folder="">Tüm İçerikler</button>
+                  <div id="libraryFolderList"></div>
+                </aside>
+                <section class="library-explorer-main">
+                  <div class="library-explorer-toolbar">
+                    <div>
+                      <strong id="libraryExplorerTitle">Tüm İçerikler</strong>
+                      <small id="libraryExplorerCount">0 içerik</small>
+                    </div>
+                    <div class="library-view-toggle">
+                      <button id="libraryGridModeBtn" class="view-btn active">▦</button>
+                      <button id="libraryListModeBtn" class="view-btn">☷</button>
+                    </div>
+                  </div>
+                  <div id="libraryExplorerGrid" class="library-explorer-grid"></div>
+                  <div id="libraryPreviewPane" class="library-preview-pane hidden"></div>
+                </section>
+              </div>
+
               <div class="admin-grid">
                 <div class="panel">
                   <h3 id="reportFormTitle">Yeni Rapor</h3>
@@ -221,6 +408,99 @@
               </div>
             </div>
 
+
+            <div id="page-library" class="admin-page">
+              <div class="page-head">
+                <div><div class="kicker">Kurumsal Kütüphane</div><h2>Doküman ve İçerikler</h2><p>Firmalara ait dosya, bağlantı ve içerikleri yönetin.</p></div>
+                <button id="newLibraryItemBtn" class="btn btn-primary">+ Yeni İçerik</button>
+              </div>
+              <div class="library-explorer-shell">
+                <aside class="library-folder-pane">
+                  <div class="library-pane-title">Klasörler</div>
+                  <button class="library-folder-btn active" data-folder="">Tüm İçerikler</button>
+                  <div id="libraryFolderList"></div>
+                </aside>
+                <section class="library-explorer-main">
+                  <div class="library-explorer-toolbar">
+                    <div>
+                      <strong id="libraryExplorerTitle">Tüm İçerikler</strong>
+                      <small id="libraryExplorerCount">0 içerik</small>
+                    </div>
+                    <div class="library-view-toggle">
+                      <button id="libraryGridModeBtn" class="view-btn active">▦</button>
+                      <button id="libraryListModeBtn" class="view-btn">☷</button>
+                    </div>
+                  </div>
+                  <div id="libraryExplorerGrid" class="library-explorer-grid"></div>
+                  <div id="libraryPreviewPane" class="library-preview-pane hidden"></div>
+                </section>
+              </div>
+
+              <div class="admin-grid">
+                <div class="panel">
+                  <h3 id="libraryFormTitle">Yeni İçerik</h3>
+                  <input id="libraryItemId" type="hidden">
+                  <label>Firma</label><select id="libraryCompany" class="input"></select>
+                  <div class="form-row">
+                    <div><label>İçerik türü</label>
+                      <select id="libraryType" class="input">
+                        <option value="pdf">PDF</option><option value="excel">Excel / CSV</option>
+                        <option value="word">Word</option><option value="powerpoint">PowerPoint</option>
+                        <option value="image">Görsel</option><option value="video">Video Bağlantısı</option>
+                        <option value="zip">ZIP Arşivi</option><option value="link">Web Bağlantısı</option>
+                        <option value="announcement">Duyuru / Metin</option>
+                      </select>
+                    </div>
+                    <div><label>Kategori</label><input id="libraryCategory" class="input" placeholder="Finans, İnsan Kaynakları..."></div>
+                  </div>
+                  <div class="form-row">
+                    <div><label>Alt kategori</label><input id="librarySubcategory" class="input"></div>
+                    <div><label>Versiyon</label><input id="libraryVersion" class="input" placeholder="1.0"></div>
+                  </div>
+                  <label>Başlık</label><input id="libraryTitle" class="input">
+                  <label>Açıklama</label><textarea id="libraryDescription" class="input"></textarea>
+                  <label>Dosya yükle</label>
+                  <input id="libraryFile" class="input" type="file"
+                    accept=".pdf,.xlsx,.xls,.csv,.doc,.docx,.ppt,.pptx,.png,.jpg,.jpeg,.webp,.svg,.zip,.mp4,.webm">
+                  <div id="libraryFileInfo" class="file-info-box">
+                    <span class="note">Henüz dosya seçilmedi.</span>
+                  </div>
+
+                  <label>veya bağlantı adresi</label>
+                  <input id="libraryUrl" class="input" placeholder="https://...">
+
+                  <label>Etiketler</label><input id="libraryTags" class="input" placeholder="bütçe, 2026, yönetim">
+                  <div class="form-row">
+                    <div><label>Yayın tarihi</label><input id="libraryPublishDate" class="input" type="date"></div>
+                    <div><label>Geçerlilik tarihi</label><input id="libraryExpiryDate" class="input" type="date"></div>
+                  </div>
+                  <div class="form-row">
+                    <label class="check-item"><input id="libraryActive" type="checkbox" checked> Aktif</label>
+                    <label class="check-item"><input id="libraryDownloadable" type="checkbox" checked> İndirilebilir</label>
+                  </div>
+                  <div class="form-actions">
+                    <button id="saveLibraryItemBtn" class="btn btn-primary">Kaydet</button>
+                    <button id="clearLibraryItemBtn" class="btn">Temizle</button>
+                  </div>
+                </div>
+                <div class="panel table-panel">
+                  <div class="library-admin-toolbar">
+                    <input id="librarySearch" class="input" placeholder="Başlık, kategori veya etiket ara...">
+                    <select id="libraryCompanyFilter" class="input"><option value="">Tüm firmalar</option></select>
+                    <select id="libraryTypeFilter" class="input">
+                      <option value="">Tüm türler</option><option value="pdf">PDF</option><option value="excel">Excel</option>
+                      <option value="word">Word</option><option value="powerpoint">PowerPoint</option><option value="image">Görsel</option>
+                      <option value="video">Video</option><option value="zip">ZIP</option><option value="link">Web</option><option value="announcement">Duyuru</option>
+                    </select>
+                  </div>
+                  <table class="data-table">
+                    <thead><tr><th>İçerik</th><th>Firma</th><th>Tür</th><th>Durum</th><th>İşlem</th></tr></thead>
+                    <tbody id="libraryTable"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
             <div id="page-roles" class="admin-page">
               <div class="page-head">
                 <div><div class="kicker">Rol Yönetimi</div><h2>Roller</h2></div>
@@ -231,6 +511,28 @@
             <div id="page-backup" class="admin-page">
               <div class="page-head">
                 <div><div class="kicker">Veri Güvenliği</div><h2>Yedekleme</h2></div>
+              </div>
+
+              <div class="library-explorer-shell">
+                <aside class="library-folder-pane">
+                  <div class="library-pane-title">Klasörler</div>
+                  <button class="library-folder-btn active" data-folder="">Tüm İçerikler</button>
+                  <div id="libraryFolderList"></div>
+                </aside>
+                <section class="library-explorer-main">
+                  <div class="library-explorer-toolbar">
+                    <div>
+                      <strong id="libraryExplorerTitle">Tüm İçerikler</strong>
+                      <small id="libraryExplorerCount">0 içerik</small>
+                    </div>
+                    <div class="library-view-toggle">
+                      <button id="libraryGridModeBtn" class="view-btn active">▦</button>
+                      <button id="libraryListModeBtn" class="view-btn">☷</button>
+                    </div>
+                  </div>
+                  <div id="libraryExplorerGrid" class="library-explorer-grid"></div>
+                  <div id="libraryPreviewPane" class="library-preview-pane hidden"></div>
+                </section>
               </div>
 
               <div class="admin-grid">
@@ -278,6 +580,8 @@
   <script src="js/companies.js"></script>
   <script src="js/users.js"></script>
   <script src="js/reports.js"></script>
+  <script src="js/file-store.js"></script>
+  <script src="js/library.js"></script>
   <script src="js/admin.js"></script>
   <script src="js/app.js"></script>
 </body>

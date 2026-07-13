@@ -5,17 +5,17 @@ const DEFAULT_DATA = {
     system_admin: {
       label: "Sistem Yöneticisi",
       description: "Tüm firmaları, kullanıcıları ve raporları yönetebilir.",
-      permissions: ["dashboard","companies","users","reports","roles","backup"]
+      permissions: ["dashboard","companies","users","reports","library","roles","backup"]
     },
     company_admin: {
       label: "Firma Yöneticisi",
       description: "Yetkili olduğu firmaların kullanıcılarını ve raporlarını yönetebilir.",
-      permissions: ["dashboard","users","reports"]
+      permissions: ["dashboard","users","reports","library"]
     },
     analyst: {
       label: "Analist",
       description: "Yetkili olduğu firmaların raporlarını yönetebilir.",
-      permissions: ["dashboard","reports"]
+      permissions: ["dashboard","reports","library"]
     },
     viewer: {
       label: "Görüntüleyici",
@@ -39,8 +39,15 @@ const DEFAULT_DATA = {
       shortName: "ADG",
       color: "#19b77d",
       logo: "",
+      taxNo: "",
+      taxOffice: "",
+      phone: "",
+      email: "",
+      website: "",
+      address: "",
       active: true,
-      reports: []
+      reports: [],
+      library: []
     }
   ]
 };

@@ -97,3 +97,33 @@ clearCompanyForm();
 renderRoleOptions();
 clearUserForm();
 clearReportForm();
+
+document.querySelectorAll(".portal-nav-btn").forEach(button => {
+  button.onclick = () => {
+    document.querySelectorAll(".portal-nav-btn").forEach(item => item.classList.remove("active"));
+    button.classList.add("active");
+    PORTAL_VIEW = button.dataset.portalView;
+    renderPortalContent();
+  };
+});
+
+document.getElementById("portalSearch").addEventListener("input", renderPortalContent);
+
+document.getElementById("gridViewBtn").onclick = () => {
+  PORTAL_GRID_MODE = "grid";
+  document.getElementById("gridViewBtn").classList.add("active");
+  document.getElementById("listViewBtn").classList.remove("active");
+  renderPortalContent();
+};
+
+document.getElementById("listViewBtn").onclick = () => {
+  PORTAL_GRID_MODE = "list";
+  document.getElementById("listViewBtn").classList.add("active");
+  document.getElementById("gridViewBtn").classList.remove("active");
+  renderPortalContent();
+};
+
+document.getElementById("changeCompanyBtn").onclick = showCompanySelection;
+document.getElementById("topChangeCompanyBtn").onclick = showCompanySelection;
+
+clearLibraryForm();
