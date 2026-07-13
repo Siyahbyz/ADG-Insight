@@ -6,9 +6,6 @@ GitHub yükleme:
 3. css ve js klasörleri aynı yapıda korunmalıdır.
 4. Cloudflare Pages otomatik olarak yeniden yayınlar.
 
-Yönetici girişi:
-demo@adg.com
-ADG2026
 
 Not:
 Veriler şimdilik tarayıcının localStorage alanında tutulur.
