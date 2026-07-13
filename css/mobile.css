@@ -1,0 +1,17 @@
+@media(max-width:980px){
+  .login-layout{grid-template-columns:1fr}
+  .hero h1{font-size:54px}
+  .admin-layout{grid-template-columns:1fr}
+  .sidebar{display:flex;overflow:auto;border-right:0;border-bottom:1px solid var(--line);padding:10px}
+  .nav-btn{width:auto;white-space:nowrap}
+  .admin-grid{grid-template-columns:1fr}
+}
+@media(max-width:680px){
+  .topbar{padding:0 16px}
+  .session-user{display:none}
+  .login-layout,.portal-wrap,.admin-main{padding:24px 16px}
+  .hero h1{font-size:42px}
+  .logo-orbit{width:240px;height:240px}
+  .page-head{align-items:flex-start;flex-direction:column}
+  .stats{grid-template-columns:1fr 1fr}
+}

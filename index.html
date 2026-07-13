@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ADG Insight</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/mobile.css">
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">
+          <div class="brand-bars"><span></span><span></span><span></span></div>
+        </div>
+        <div>
+          <div class="brand-title">ADG <span>Insight</span></div>
+          <div class="brand-sub">Veriyi karara dönüştür.</div>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <span id="sessionUser" class="session-user hidden"></span>
+        <button id="passwordBtn" class="btn hidden">Şifrem</button>
+        <button id="adminBtn" class="btn hidden">Yönetim</button>
+        <button id="logoutBtn" class="btn hidden">Çıkış</button>
+      </div>
+    </header>
+
+    <main>
+      <section id="loginScreen" class="screen active">
+        <div class="login-layout">
+          <div class="hero">
+            <div class="kicker">Yönetim Bilgi Merkezi</div>
+            <h1>Veriyi anlamlandırın.<span>Kararı güçlendirin.</span></h1>
+            <p>Kurumsal raporlarınıza güvenli, sade ve etkileyici bir yönetim deneyimiyle erişin.</p>
+            <div class="logo-orbit">
+              <div class="ring r1"></div>
+              <div class="ring r2"></div>
+              <div class="ring r3"></div>
+              <div class="core"><strong>ADG</strong><small>INSIGHT</small></div>
+            </div>
+          </div>
+
+          <div class="card login-card">
+            <h2>Hoş geldiniz</h2>
+            <p>Devam etmek için kullanıcı bilgilerinizle giriş yapın.</p>
+
+            <form id="loginForm">
+              <label>E-posta adresi</label>
+              <input id="email" class="input" type="email" required>
+
+              <label>Şifre</label>
+              <input id="password" class="input" type="password" required>
+
+              <button class="btn btn-primary full" type="submit">GİRİŞ YAP</button>
+              <div id="loginMessage" class="message"></div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section id="portalScreen" class="screen">
+        <div class="portal-wrap">
+          <div class="page-head">
+            <div>
+              <div class="kicker">Müşteri Portalı</div>
+              <h2>Firma seçiniz</h2>
+              <p>Yalnızca hesabınıza tanımlanan firmalar gösterilir.</p>
+            </div>
+          </div>
+          <div id="companyGrid" class="card-grid"></div>
+        </div>
+      </section>
+
+      <section id="adminScreen" class="screen">
+        <div class="admin-layout">
+          <aside class="sidebar">
+            <button class="nav-btn active" data-page="dashboard">Genel Bakış</button>
+            <button class="nav-btn" data-page="companies">Firmalar</button>
+            <button class="nav-btn" data-page="users">Kullanıcılar</button>
+            <button class="nav-btn" data-page="reports">Raporlar</button>
+            <button class="nav-btn" data-page="roles">Roller</button>
+            <button class="nav-btn" data-page="backup">Yedekleme</button>
+            <button id="portalReturnBtn" class="nav-btn">Portala Dön</button>
+          </aside>
+
+          <section class="admin-main">
+            <div id="page-dashboard" class="admin-page active">
+              <div class="page-head">
+                <div>
+                  <div class="kicker">Yönetim Merkezi</div>
+                  <h2>Genel Bakış</h2>
+                  <p>Portalın genel durumunu izleyin.</p>
+                </div>
+              </div>
+              <div class="stats">
+                <div class="stat"><strong id="statCompanies">0</strong><span>Firma</span></div>
+                <div class="stat"><strong id="statUsers">0</strong><span>Kullanıcı</span></div>
+                <div class="stat"><strong id="statReports">0</strong><span>Rapor</span></div>
+                <div class="stat"><strong id="statPublished">0</strong><span>Yayında</span></div>
+              </div>
+            </div>
+
+            <div id="page-companies" class="admin-page">
+              <div class="page-head">
+                <div><div class="kicker">Firma Yönetimi</div><h2>Firmalar</h2></div>
+                <button id="newCompanyBtn" class="btn btn-primary">+ Yeni Firma</button>
+              </div>
+
+              <div class="admin-grid">
+                <div class="panel">
+                  <h3 id="companyFormTitle">Yeni Firma</h3>
+                  <input id="companyId" type="hidden">
+
+                  <label>Firma adı</label>
+                  <input id="companyName" class="input">
+
+                  <label>Kısa ad</label>
+                  <input id="companyShortName" class="input">
+
+                  <label>Kurumsal renk</label>
+                  <input id="companyColor" class="input" type="color" value="#19b77d">
+
+                  <label>Logo bağlantısı</label>
+                  <input id="companyLogo" class="input">
+
+                  <div class="form-actions">
+                    <button id="saveCompanyBtn" class="btn btn-primary">Kaydet</button>
+                    <button id="clearCompanyBtn" class="btn">Temizle</button>
+                  </div>
+                </div>
+
+                <div class="panel table-panel">
+                  <table class="data-table">
+                    <thead><tr><th>Firma</th><th>Rapor</th><th>İşlem</th></tr></thead>
+                    <tbody id="companyTable"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div id="page-users" class="admin-page">
+              <div class="page-head">
+                <div><div class="kicker">Kullanıcı Yönetimi</div><h2>Kullanıcılar</h2></div>
+                <button id="newUserBtn" class="btn btn-primary">+ Yeni Kullanıcı</button>
+              </div>
+
+              <div class="admin-grid">
+                <div class="panel">
+                  <h3 id="userFormTitle">Yeni Kullanıcı</h3>
+                  <input id="editingUserEmail" type="hidden">
+
+                  <label>Ad soyad</label>
+                  <input id="userName" class="input">
+
+                  <label>E-posta</label>
+                  <input id="userEmail" class="input" type="email">
+
+                  <label>Geçici şifre</label>
+                  <input id="userPassword" class="input" type="password">
+
+                  <label>Rol</label>
+                  <select id="userRole" class="input"></select>
+                  <div id="roleHelp" class="note"></div>
+
+                  <label>Yetkili firmalar</label>
+                  <div id="userCompanies" class="check-list"></div>
+
+                  <div class="form-actions">
+                    <button id="saveUserBtn" class="btn btn-primary">Kaydet</button>
+                    <button id="clearUserBtn" class="btn">Temizle</button>
+                  </div>
+                </div>
+
+                <div class="panel table-panel">
+                  <table class="data-table">
+                    <thead><tr><th>Kullanıcı</th><th>Rol</th><th>Firma</th><th>İşlem</th></tr></thead>
+                    <tbody id="userTable"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div id="page-reports" class="admin-page">
+              <div class="page-head">
+                <div><div class="kicker">Rapor Yönetimi</div><h2>Raporlar</h2></div>
+                <button id="newReportBtn" class="btn btn-primary">+ Yeni Rapor</button>
+              </div>
+
+              <div class="admin-grid">
+                <div class="panel">
+                  <h3 id="reportFormTitle">Yeni Rapor</h3>
+                  <input id="reportIndex" type="hidden">
+
+                  <label>Firma</label>
+                  <select id="reportCompany" class="input"></select>
+
+                  <label>Rapor başlığı</label>
+                  <input id="reportTitle" class="input">
+
+                  <label>Rapor bağlantısı</label>
+                  <input id="reportUrl" class="input">
+
+                  <label>Açıklama</label>
+                  <textarea id="reportDescription" class="input"></textarea>
+
+                  <div class="form-actions">
+                    <button id="saveReportBtn" class="btn btn-primary">Kaydet</button>
+                    <button id="clearReportBtn" class="btn">Temizle</button>
+                  </div>
+                </div>
+
+                <div class="panel table-panel">
+                  <table class="data-table">
+                    <thead><tr><th>Rapor</th><th>Firma</th><th>Durum</th><th>İşlem</th></tr></thead>
+                    <tbody id="reportTable"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div id="page-roles" class="admin-page">
+              <div class="page-head">
+                <div><div class="kicker">Rol Yönetimi</div><h2>Roller</h2></div>
+              </div>
+              <div id="roleCards" class="role-grid"></div>
+            </div>
+
+            <div id="page-backup" class="admin-page">
+              <div class="page-head">
+                <div><div class="kicker">Veri Güvenliği</div><h2>Yedekleme</h2></div>
+              </div>
+
+              <div class="admin-grid">
+                <div class="panel">
+                  <h3>Yedek Al</h3>
+                  <button id="exportBtn" class="btn btn-primary">JSON indir</button>
+                </div>
+                <div class="panel">
+                  <h3>Yedek Geri Yükle</h3>
+                  <input id="importFile" class="input" type="file" accept=".json">
+                  <button id="importBtn" class="btn">Yedeği Yükle</button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="passwordModal" class="modal">
+    <div class="modal-card">
+      <h3>Şifremi Değiştir</h3>
+      <label>Mevcut şifre</label>
+      <input id="currentPassword" class="input" type="password">
+
+      <label>Yeni şifre</label>
+      <input id="newPassword" class="input" type="password">
+
+      <label>Yeni şifre tekrar</label>
+      <input id="confirmPassword" class="input" type="password">
+
+      <div id="passwordMessage" class="message"></div>
+
+      <div class="form-actions">
+        <button id="savePasswordBtn" class="btn btn-primary">Değiştir</button>
+        <button id="closePasswordBtn" class="btn">Kapat</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/roles.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/companies.js"></script>
+  <script src="js/users.js"></script>
+  <script src="js/reports.js"></script>
+  <script src="js/admin.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
