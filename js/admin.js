@@ -25,6 +25,8 @@ function renderAllAdmin(){
   renderUserTable();
   renderReportCompanyOptions();
   renderReportTable();
+  renderLibraryCompanyOptions();
+  renderLibraryTable();
   renderRoleCards();
   applyPermissions();
 }
