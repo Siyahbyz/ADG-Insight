@@ -54,3 +54,10 @@ V11.0-B.2
 - Dosyalar aynı tarayıcıdaki IndexedDB alanında saklanır.
 - Dosya açma, indirme ve değiştirme işlevleri eklendi.
 - Geçici dosya sınırı 100 MB'dır.
+
+V11.1.0
+- Seçilen dosyanın adı, boyutu ve türü gösterilir.
+- Dosya hazır/bekliyor/hata durumu gösterilir.
+- Değiştir ve Temizle düğmeleri eklendi.
+- Tarayıcı güvenliği nedeniyle tam yerel dosya yolu gösterilemez; dosya adı gösterilir.
+- Build: 2026-07-14 09:20

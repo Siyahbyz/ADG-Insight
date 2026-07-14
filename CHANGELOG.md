@@ -20,3 +20,7 @@
 - Rapor dosya yükleme sistemi eklendi.
 - Sürüm ve build etiketi standart hale getirildi.
 - Dosya açma, indirme ve değiştirme desteği eklendi.
+
+## V11.1.0
+- Rapor dosya seçimi arayüzü tamamlandı.
+- Dosya adı, durum, değiştir ve temizle kontrolleri eklendi.

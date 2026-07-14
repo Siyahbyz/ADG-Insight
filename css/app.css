@@ -43,3 +43,11 @@
 .report-card-actions{display:flex;gap:7px;margin-top:12px}
 .report-open,.report-download{flex:1;border:1px solid var(--line);background:#09182b;color:#d9e6f4;border-radius:8px;padding:7px;cursor:pointer;font-size:10px}
 .report-open{border-color:rgba(75,226,210,.25);color:var(--cyan)}
+
+.selected-file-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px;align-items:center}
+.danger-btn{border-color:rgba(255,107,131,.30);color:#ff8ea0}
+.upload-status{margin-top:9px;padding:9px 11px;border-radius:10px;border:1px solid var(--line);font-size:10px}
+.upload-status.waiting{color:var(--muted);background:#09182b}
+.upload-status.ready{color:#7ff2c6;border-color:rgba(127,242,198,.25);background:rgba(127,242,198,.07)}
+.upload-status.error{color:#ff9aab;border-color:rgba(255,107,131,.25);background:rgba(255,107,131,.07)}
+@media(max-width:620px){.selected-file-row{grid-template-columns:1fr}}

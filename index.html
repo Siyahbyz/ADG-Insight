@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>ADG Insight V11.0-B.2</title>
-  <link rel="stylesheet" href="css/app.css?v=11.0.2">
+  <title>ADG Insight V11.1.0</title>
+  <link rel="stylesheet" href="css/app.css?v=11.1.0">
 </head>
 <body>
 <div class="app">
@@ -14,7 +14,7 @@
       <div><strong>ADG <em>Insight</em></strong><small>Veriyi karara dönüştür.</small></div>
     </div>
     <div class="top-actions">
-      <span class="build-badge">V11.0-B.2</span><span class="build-time">Build: 2026-07-14 07:54</span><span id="sessionLabel" class="session hidden"></span>
+      <span class="build-badge">V11.1.0</span><span class="build-time">Build: 2026-07-14 09:20</span><span id="sessionLabel" class="session hidden"></span>
       <button id="profileBtn" class="btn hidden">Profilim</button>
       <button id="adminBtn" class="btn hidden">Yönetim</button>
       <button id="logoutBtn" class="btn hidden">Çıkış</button>
@@ -224,6 +224,13 @@
                     <span>veya dosya seçmek için tıklayın</span>
                   </div>
                   <div id="reportFileInfo" class="file-info-box"><span class="note">Henüz dosya seçilmedi.</span></div>
+                  <label>Seçilen dosya</label>
+                  <div class="selected-file-row">
+                    <input id="selectedReportFileName" class="input" readonly placeholder="Dosya seçilmedi">
+                    <button id="changeReportFileBtn" class="btn" type="button">Değiştir</button>
+                    <button id="clearReportFileBtn" class="btn danger-btn" type="button">Temizle</button>
+                  </div>
+                  <div id="reportFileStatus" class="upload-status waiting">Dosya bekleniyor</div>
                 </div>
                 <div class="form-row">
                   <div><label>Sıralama</label><input id="reportOrder" class="input" type="number" min="0" value="0"></div>
@@ -260,8 +267,8 @@
   </div>
 </div>
 
-<script src="js/storage.js?v=11.0.2"></script>
-<script src="js/report-file-store.js?v=11.0.2"></script>
-<script src="js/app.js?v=11.0.2"></script>
+<script src="js/storage.js?v=11.1.0"></script>
+<script src="js/report-file-store.js?v=11.1.0"></script>
+<script src="js/app.js?v=11.1.0"></script>
 </body>
 </html>
