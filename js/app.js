@@ -1,12 +1,11 @@
 const $=id=>document.getElementById(id);
 let REPORT_VIEW_MODE="grid";
-let REPORT_SELECTED_FILE=null;
 let REPORT_FAVORITES=JSON.parse(localStorage.getItem("adgInsightV11Favorites")||"[]");
 let REPORT_RECENT=JSON.parse(localStorage.getItem("adgInsightV11Recent")||"[]");
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 function saveReportPrefs(){localStorage.setItem("adgInsightV11Favorites",JSON.stringify(REPORT_FAVORITES));localStorage.setItem("adgInsightV11Recent",JSON.stringify(REPORT_RECENT))}
 function reportKey(companyId,reportId){return `${companyId}:${reportId}`}
-function reportTypeInfo(type){return ({powerbi:{label:"Power BI",icon:"BI"},web:{label:"Web",icon:"WEB"},pdf:{label:"PDF",icon:"PDF"},excel:{label:"Excel",icon:"XLS"},word:{label:"Word",icon:"DOC"},powerpoint:{label:"Sunum",icon:"PPT"},image:{label:"Görsel",icon:"IMG"},video:{label:"Video",icon:"VID"}})[type]||{label:"Web",icon:"WEB"}}
+function reportTypeInfo(type){return ({powerbi:{label:"Power BI",icon:"BI"},web:{label:"Web Raporu",icon:"WEB"}})[type]||{label:"Web Raporu",icon:"WEB"}}
 function showView(id){document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));$(id).classList.add("active")}
 function isAdmin(){return CURRENT_USER?.role==="system_admin"}
 function visibleCompanies(){return isAdmin()?DATA.companies:DATA.companies.filter(c=>(CURRENT_USER?.companyIds||[]).includes(c.id))}
@@ -68,7 +67,6 @@ function reportCardHtml(r){
     <div class="report-card-top"><div class="report-icon">${esc(info.icon)}</div><button class="favorite ${fav?"active":""}" data-favorite="${esc(r.id)}">★</button></div>
     <div><h4>${esc(r.title)}</h4><p>${esc(r.description||"Kurumsal rapor")}</p></div>
     <div class="report-meta"><b>${esc(r.category||"Genel")}</b><span>${esc(info.label)}</span></div>
-    <div class="report-card-actions"><button class="report-open" data-open="${esc(r.id)}">Aç</button>${r.sourceMode==="file"?`<button class="report-download" data-download="${esc(r.id)}">İndir</button>`:""}</div>
   </article>`;
 }
 function bindReportCards(container,reports){
@@ -77,8 +75,6 @@ function bindReportCards(container,reports){
     card.onclick=()=>openReport(report);
   });
   container.querySelectorAll("[data-favorite]").forEach(btn=>btn.onclick=e=>{e.stopPropagation();toggleReportFavorite(btn.dataset.favorite)});
-  container.querySelectorAll("[data-open]").forEach(btn=>btn.onclick=e=>{e.stopPropagation();const report=reports.find(r=>r.id===btn.dataset.open);openReport(report,false)});
-  container.querySelectorAll("[data-download]").forEach(btn=>btn.onclick=e=>{e.stopPropagation();const report=reports.find(r=>r.id===btn.dataset.download);openReport(report,true)});
 }
 function renderReportSet(containerId,reports,limit=null){
   const box=$(containerId),items=limit?reports.slice(0,limit):reports;
@@ -104,21 +100,12 @@ function toggleReportFavorite(reportId){
   REPORT_FAVORITES=REPORT_FAVORITES.includes(key)?REPORT_FAVORITES.filter(x=>x!==key):[...REPORT_FAVORITES,key];
   saveReportPrefs();renderPortalReports();
 }
-async function openReport(report,download=false){
+function openReport(report){
   if(!report)return;
   const key=reportKey(SELECTED_COMPANY.id,report.id);
   REPORT_RECENT=[key,...REPORT_RECENT.filter(x=>x!==key)].slice(0,20);saveReportPrefs();
-  if(report.sourceMode==="file"&&report.fileId){
-    const stored=await getReportFile(report.fileId);
-    if(!stored){alert("Dosya bu tarayıcıda bulunamadı.");renderPortalReports();return}
-    const objectUrl=URL.createObjectURL(stored.blob);
-    if(download){const a=document.createElement("a");a.href=objectUrl;a.download=report.fileName||stored.name||"dosya";a.click()}
-    else window.open(objectUrl,"_blank","noopener");
-    setTimeout(()=>URL.revokeObjectURL(objectUrl),60000);renderPortalReports();return;
-  }
-  if(!String(report.url||"").trim()){alert("Bu rapor için bağlantı veya dosya eklenmemiş.");renderPortalReports();return}
-  if(download){const a=document.createElement("a");a.href=report.url;a.target="_blank";a.download="";a.click()}
-  else window.open(report.url,"_blank","noopener");
+  if(!String(report.url||"").trim()){alert("Bu rapor için bağlantı henüz eklenmemiş.");renderPortalReports();return}
+  window.open(report.url,"_blank","noopener");
   renderPortalReports();
 }
 function showPortalPage(page){
@@ -137,14 +124,11 @@ function renderReportAdminOptions(){
   const opts=DATA.companies.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join("");
   $("reportCompany").innerHTML=opts;$("adminReportCompanyFilter").innerHTML='<option value="">Tüm firmalar</option>'+opts;
 }
-function setReportFileStatus(text,state="waiting"){$("reportFileStatus").textContent=text;$("reportFileStatus").className=`upload-status ${state}`}
-function clearReportFileSelection(){REPORT_SELECTED_FILE=null;$("reportFile").value="";$("reportFileInfo").innerHTML='<span class="note">Henüz dosya seçilmedi.</span>';$("selectedReportFileName").value="";setReportFileStatus("Dosya bekleniyor","waiting")}
-function updateReportSourceMode(){const mode=document.querySelector('input[name="reportSourceMode"]:checked').value;$("reportUrlArea").classList.toggle("hidden",mode!=="url");$("reportFileArea").classList.toggle("hidden",mode!=="file")}
-function clearReportForm(){$("reportEditKey").value="";$("reportType").value="powerbi";$("reportCategory").value="";$("reportTitle").value="";$("reportDescription").value="";$("reportUrl").value="";$("reportOrder").value="0";$("reportActive").checked=true;document.querySelector('input[name="reportSourceMode"][value="url"]').checked=true;updateReportSourceMode();clearReportFileSelection();$("reportFormTitle").textContent="Yeni Rapor"}
+function clearReportForm(){$("reportEditKey").value="";$("reportType").value="powerbi";$("reportCategory").value="";$("reportTitle").value="";$("reportDescription").value="";$("reportUrl").value="";$("reportOrder").value="0";$("reportActive").checked=true;$("reportFormTitle").textContent="Yeni Rapor"}
 $("newReportBtn").onclick=clearReportForm;$("clearReportBtn").onclick=clearReportForm;
-$("reportForm").onsubmit=async e=>{e.preventDefault();const companyId=$("reportCompany").value,key=$("reportEditKey").value,title=$("reportTitle").value.trim();if(!companyId||!title)return;const sourceMode=document.querySelector('input[name="reportSourceMode"]:checked').value;const existingReport=key?DATA.companies.flatMap(c=>c.reports||[]).find(r=>r.id===key.split(":")[1]):null;if(sourceMode==="url"&&!$("reportUrl").value.trim())return alert("Bağlantı adresi zorunludur.");if(sourceMode==="file"&&!REPORT_SELECTED_FILE&&!existingReport?.fileId){setReportFileStatus("Kaydetmeden önce bir dosya seçin","error");return alert("Bir dosya seçin.");}const data={id:key?key.split(":")[1]:"rep_"+Date.now(),title,description:$("reportDescription").value.trim(),url:sourceMode==="url"?$("reportUrl").value.trim():"",type:$("reportType").value,category:$("reportCategory").value.trim()||"Genel",order:Number($("reportOrder").value)||0,active:$("reportActive").checked,sourceMode};if(sourceMode==="file"){if(REPORT_SELECTED_FILE){data.fileId="report_file_"+Date.now()+"_"+Math.random().toString(36).slice(2);data.fileName=REPORT_SELECTED_FILE.name;data.fileSize=REPORT_SELECTED_FILE.size;data.fileMime=REPORT_SELECTED_FILE.type;await saveReportFile(data.fileId,REPORT_SELECTED_FILE);if(existingReport?.fileId&&existingReport.fileId!==data.fileId)await deleteReportFile(existingReport.fileId)}else{data.fileId=existingReport.fileId;data.fileName=existingReport.fileName;data.fileSize=existingReport.fileSize;data.fileMime=existingReport.fileMime}}else if(existingReport?.fileId){await deleteReportFile(existingReport.fileId)}DATA.companies.forEach(c=>c.reports=(c.reports||[]).filter(r=>r.id!==data.id));DATA.companies.find(c=>c.id===companyId).reports.push(data);saveData();clearReportForm();renderAdmin()};
-function editReport(companyId,reportId){const c=DATA.companies.find(x=>x.id===companyId),r=c?.reports?.find(x=>x.id===reportId);if(!r)return;$("reportEditKey").value=`${companyId}:${reportId}`;$("reportCompany").value=companyId;$("reportType").value=r.type;$("reportCategory").value=r.category;$("reportTitle").value=r.title;$("reportDescription").value=r.description;$("reportUrl").value=r.url||"";$("reportOrder").value=r.order||0;$("reportActive").checked=r.active!==false;document.querySelector(`input[name="reportSourceMode"][value="${r.sourceMode||"url"}"]`).checked=true;updateReportSourceMode();clearReportFileSelection();if(r.fileName){$("reportFileInfo").innerHTML=`<div class="report-file-info"><div class="report-file-icon">${esc(reportTypeInfo(r.type).icon)}</div><div class="report-file-meta"><strong>${esc(r.fileName)}</strong><span>${formatReportFileSize(r.fileSize||0)} · Kayıtlı dosya</span></div></div>`;$("selectedReportFileName").value=r.fileName;setReportFileStatus("Kayıtlı dosya hazır","ready");}$("reportFormTitle").textContent="Raporu Düzenle"}
-async function deleteReport(companyId,reportId){const c=DATA.companies.find(x=>x.id===companyId),r=c?.reports?.find(x=>x.id===reportId);if(!r||!confirm(`${r.title} silinsin mi?`))return;if(r.fileId)await deleteReportFile(r.fileId);c.reports=c.reports.filter(x=>x.id!==reportId);REPORT_FAVORITES=REPORT_FAVORITES.filter(k=>k!==reportKey(companyId,reportId));REPORT_RECENT=REPORT_RECENT.filter(k=>k!==reportKey(companyId,reportId));saveReportPrefs();saveData();renderAdmin()}
+$("reportForm").onsubmit=e=>{e.preventDefault();const companyId=$("reportCompany").value,key=$("reportEditKey").value,title=$("reportTitle").value.trim();if(!companyId||!title)return;const data={id:key?key.split(":")[1]:"rep_"+Date.now(),title,description:$("reportDescription").value.trim(),url:$("reportUrl").value.trim(),type:$("reportType").value==="powerbi"?"powerbi":"web",category:$("reportCategory").value.trim()||"Genel",order:Number($("reportOrder").value)||0,active:$("reportActive").checked};DATA.companies.forEach(c=>c.reports=(c.reports||[]).filter(r=>r.id!==data.id));DATA.companies.find(c=>c.id===companyId).reports.push(data);saveData();clearReportForm();renderAdmin()};
+function editReport(companyId,reportId){const c=DATA.companies.find(x=>x.id===companyId),r=c?.reports?.find(x=>x.id===reportId);if(!r)return;$("reportEditKey").value=`${companyId}:${reportId}`;$("reportCompany").value=companyId;$("reportType").value=r.type==="powerbi"?"powerbi":"web";$("reportCategory").value=r.category;$("reportTitle").value=r.title;$("reportDescription").value=r.description;$("reportUrl").value=r.url;$("reportOrder").value=r.order||0;$("reportActive").checked=r.active!==false;$("reportFormTitle").textContent="Raporu Düzenle"}
+function deleteReport(companyId,reportId){const c=DATA.companies.find(x=>x.id===companyId),r=c?.reports?.find(x=>x.id===reportId);if(!r||!confirm(`${r.title} silinsin mi?`))return;c.reports=c.reports.filter(x=>x.id!==reportId);REPORT_FAVORITES=REPORT_FAVORITES.filter(k=>k!==reportKey(companyId,reportId));REPORT_RECENT=REPORT_RECENT.filter(k=>k!==reportKey(companyId,reportId));saveReportPrefs();saveData();renderAdmin()}
 function renderReportTable(){const q=$("adminReportSearch").value.trim().toLowerCase(),filter=$("adminReportCompanyFilter").value;$("reportTable").innerHTML="";DATA.companies.forEach(c=>{if(filter&&c.id!==filter)return;(c.reports||[]).filter(r=>!q||[r.title,r.category,r.description].some(v=>String(v||"").toLowerCase().includes(q))).forEach(r=>{$("reportTable").insertAdjacentHTML("beforeend",`<tr><td><b>${esc(r.title)}</b><br><small>${esc(r.category)}</small></td><td>${esc(c.name)}</td><td>${esc(reportTypeInfo(r.type).label)}</td><td>${r.active!==false?"Aktif":"Pasif"}</td><td><button class="action" onclick="editReport('${c.id}','${r.id}')">Düzenle</button><button class="action danger" onclick="deleteReport('${c.id}','${r.id}')">Sil</button></td></tr>`)})})}
 $("adminReportSearch").oninput=renderReportTable;$("adminReportCompanyFilter").onchange=renderReportTable;
 
@@ -160,28 +144,3 @@ document.addEventListener("click", event => {
   showPortalPage(page);
   renderPortalReports();
 });
-
-function guessReportTypeFromFile(file){
-  const name=String(file?.name||"").toLowerCase();
-  if(name.endsWith(".pdf"))return"pdf";if(/\.(xlsx|xls|csv)$/.test(name))return"excel";
-  if(/\.(doc|docx)$/.test(name))return"word";if(/\.(ppt|pptx)$/.test(name))return"powerpoint";
-  if(/\.(png|jpg|jpeg|webp|svg)$/.test(name))return"image";if(/\.(mp4|webm)$/.test(name))return"video";return"web";
-}
-function handleReportFile(file){
-  if(!file)return;if(file.size>100*1024*1024)return alert("Şimdilik en fazla 100 MB dosya yüklenebilir.");
-  REPORT_SELECTED_FILE=file;$("reportType").value=guessReportTypeFromFile(file);
-  if(!$("reportTitle").value.trim())$("reportTitle").value=file.name.replace(/\.[^.]+$/,"");
-  const info=reportTypeInfo($("reportType").value);
-  $("reportFileInfo").innerHTML=`<div class="report-file-info"><div class="report-file-icon">${esc(info.icon)}</div><div class="report-file-meta"><strong>${esc(file.name)}</strong><span>${formatReportFileSize(file.size)} · ${esc(file.type||"Dosya")}</span></div><button id="removeReportFile" type="button" class="report-file-remove">Kaldır</button></div>`;
-  $("selectedReportFileName").value=file.name;setReportFileStatus("Dosya hazır","ready");
-  $("removeReportFile").onclick=clearReportFileSelection;
-}
-document.querySelectorAll('input[name="reportSourceMode"]').forEach(r=>r.onchange=updateReportSourceMode);
-$("reportFile").onchange=e=>handleReportFile(e.target.files[0]);
-["dragenter","dragover"].forEach(evt=>$("reportDropZone").addEventListener(evt,e=>{e.preventDefault();$("reportDropZone").classList.add("dragover")}));
-["dragleave","drop"].forEach(evt=>$("reportDropZone").addEventListener(evt,e=>{e.preventDefault();$("reportDropZone").classList.remove("dragover")}));
-$("reportDropZone").addEventListener("drop",e=>handleReportFile(e.dataTransfer.files[0]));
-updateReportSourceMode();
-
-$("changeReportFileBtn").onclick=()=>$("reportFile").click();
-$("clearReportFileBtn").onclick=clearReportFileSelection;

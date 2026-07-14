@@ -25,15 +25,10 @@ function ensureDataShape(){
       title:r.title||"Rapor",
       description:r.description||"",
       url:r.url||"",
-      type:r.type||"web",
+      type:r.type==="powerbi"?"powerbi":"web",
       category:r.category||"Genel",
       order:Number.isFinite(Number(r.order))?Number(r.order):i,
-      active:r.active!==false,
-      sourceMode:r.sourceMode||"url",
-      fileId:r.fileId||"",
-      fileName:r.fileName||"",
-      fileSize:r.fileSize||0,
-      fileMime:r.fileMime||""
+      active:r.active!==false
     }));
   });
 }

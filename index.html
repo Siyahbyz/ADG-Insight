@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>ADG Insight V11.1.0</title>
-  <link rel="stylesheet" href="css/app.css?v=11.1.0">
+  <title>ADG Insight V11.1.1</title>
+  <link rel="stylesheet" href="css/app.css?v=11.1.1">
 </head>
 <body>
 <div class="app">
@@ -14,7 +14,7 @@
       <div><strong>ADG <em>Insight</em></strong><small>Veriyi karara dönüştür.</small></div>
     </div>
     <div class="top-actions">
-      <span class="build-badge">V11.1.0</span><span class="build-time">Build: 2026-07-14 09:20</span><span id="sessionLabel" class="session hidden"></span>
+      <span class="build-badge">V11.1.1</span><span class="build-time">Build: 2026-07-14 09:45</span><span id="sessionLabel" class="session hidden"></span>
       <button id="profileBtn" class="btn hidden">Profilim</button>
       <button id="adminBtn" class="btn hidden">Yönetim</button>
       <button id="logoutBtn" class="btn hidden">Çıkış</button>
@@ -81,9 +81,7 @@
               <select id="reportTypeFilter" class="input compact">
                 <option value="">Tüm türler</option>
                 <option value="powerbi">Power BI</option>
-                <option value="web">Web</option>
-                <option value="pdf">PDF</option>
-                <option value="excel">Excel</option>
+                <option value="web">Web Raporu</option>
               </select>
             </div>
           </div>
@@ -195,43 +193,16 @@
                   <div><label>Rapor türü</label>
                     <select id="reportType" class="input">
                       <option value="powerbi">Power BI</option>
-                      <option value="web">Web Bağlantısı</option>
-                      <option value="pdf">PDF</option>
-                      <option value="excel">Excel / CSV</option>
-                      <option value="word">Word</option>
-                      <option value="powerpoint">PowerPoint</option>
-                      <option value="image">Görsel</option>
-                      <option value="video">Video</option>
+                      <option value="web">Web Raporu / Dashboard</option>
                     </select>
                   </div>
                   <div><label>Kategori</label><input id="reportCategory" class="input" placeholder="Finans, Satış..."></div>
                 </div>
                 <label>Başlık</label><input id="reportTitle" class="input" required>
                 <label>Açıklama</label><textarea id="reportDescription" class="input"></textarea>
-                <label>Kaynak türü</label>
-                <div class="source-choice">
-                  <label class="check"><input type="radio" name="reportSourceMode" value="url" checked> URL</label>
-                  <label class="check"><input type="radio" name="reportSourceMode" value="file"> Dosya Yükle</label>
-                </div>
-                <div id="reportUrlArea">
-                  <label>Bağlantı</label><input id="reportUrl" class="input" placeholder="https://...">
-                </div>
-                <div id="reportFileArea" class="hidden">
-                  <label>Dosya yükle</label>
-                  <div id="reportDropZone" class="drop-zone">
-                    <input id="reportFile" type="file" accept=".pdf,.xlsx,.xls,.csv,.doc,.docx,.ppt,.pptx,.png,.jpg,.jpeg,.webp,.svg,.mp4,.webm">
-                    <strong>Dosyayı buraya sürükleyin</strong>
-                    <span>veya dosya seçmek için tıklayın</span>
-                  </div>
-                  <div id="reportFileInfo" class="file-info-box"><span class="note">Henüz dosya seçilmedi.</span></div>
-                  <label>Seçilen dosya</label>
-                  <div class="selected-file-row">
-                    <input id="selectedReportFileName" class="input" readonly placeholder="Dosya seçilmedi">
-                    <button id="changeReportFileBtn" class="btn" type="button">Değiştir</button>
-                    <button id="clearReportFileBtn" class="btn danger-btn" type="button">Temizle</button>
-                  </div>
-                  <div id="reportFileStatus" class="upload-status waiting">Dosya bekleniyor</div>
-                </div>
+                <label>Rapor bağlantısı</label>
+                <input id="reportUrl" class="input" placeholder="https://..." required>
+                <small class="field-note">Bu bölüm yalnızca Power BI veya web üzerinde görüntülenebilen dashboard bağlantıları içindir. Excel, PDF, Word ve diğer dosyalar Kütüphane bölümüne yüklenir.</small>
                 <div class="form-row">
                   <div><label>Sıralama</label><input id="reportOrder" class="input" type="number" min="0" value="0"></div>
                   <label class="check"><input id="reportActive" type="checkbox" checked> Aktif</label>
@@ -267,8 +238,7 @@
   </div>
 </div>
 
-<script src="js/storage.js?v=11.1.0"></script>
-<script src="js/report-file-store.js?v=11.1.0"></script>
-<script src="js/app.js?v=11.1.0"></script>
+<script src="js/storage.js?v=11.1.1"></script>
+<script src="js/app.js?v=11.1.1"></script>
 </body>
 </html>

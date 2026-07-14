@@ -46,18 +46,10 @@ V11.0-B.1
 - Doğru yayın kontrolü için ekranda V11.0-B.1 görünmelidir.
 
 
-V11.0-B.2
-- Üst çubukta sürüm ve build zamanı gösterilir.
-- Raporlar için URL veya Dosya Yükle seçeneği eklendi.
-- PDF, Excel, Word, PowerPoint, görsel ve video yüklenebilir.
-- Sürükle-bırak alanı eklendi.
-- Dosyalar aynı tarayıcıdaki IndexedDB alanında saklanır.
-- Dosya açma, indirme ve değiştirme işlevleri eklendi.
-- Geçici dosya sınırı 100 MB'dır.
-
-V11.1.0
-- Seçilen dosyanın adı, boyutu ve türü gösterilir.
-- Dosya hazır/bekliyor/hata durumu gösterilir.
-- Değiştir ve Temizle düğmeleri eklendi.
-- Tarayıcı güvenliği nedeniyle tam yerel dosya yolu gösterilemez; dosya adı gösterilir.
-- Build: 2026-07-14 09:20
+V11.1.1
+- Rapor ve Kütüphane görevleri net biçimde ayrıldı.
+- Rapor Merkezi yalnızca Power BI ve web tabanlı dashboard bağlantıları için kullanılır.
+- Excel, PDF, Word, PowerPoint ve diğer dosyalar rapor ekranından kaldırıldı.
+- Dosya yükleme, indirme ve kullanıcı yetkileri Kurumsal Kütüphane bölümünde geliştirilecektir.
+- Üst çubukta V11.1.1 ve build zamanı görünür.
+- Build: 2026-07-14 09:45

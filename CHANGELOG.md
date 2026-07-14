@@ -16,11 +16,7 @@
 - Eski Cloudflare/tarayıcı önbelleğine karşı sürümlü dosya bağlantıları eklendi.
 
 
-## V11.0-B.2
-- Rapor dosya yükleme sistemi eklendi.
-- Sürüm ve build etiketi standart hale getirildi.
-- Dosya açma, indirme ve değiştirme desteği eklendi.
-
-## V11.1.0
-- Rapor dosya seçimi arayüzü tamamlandı.
-- Dosya adı, durum, değiştir ve temizle kontrolleri eklendi.
+## V11.1.1
+- Rapor Merkezi URL/embed tabanlı hale getirildi.
+- Dosya türleri Rapor Merkezi kapsamından çıkarıldı.
+- Kütüphane ve rapor görevleri ayrıştırıldı.
