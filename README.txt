@@ -38,3 +38,9 @@ Sonraki sürüm: V11.0-C
 - Kurumsal kütüphane
 - Dosya yükleme
 - Dosya açma ve indirme
+
+V11.0-B.1
+- Sol portal menüsünün tıklama işlemleri güçlendirildi.
+- Cache-busting parametreleri eklendi.
+- Üst çubukta sürüm rozeti gösterilir.
+- Doğru yayın kontrolü için ekranda V11.0-B.1 görünmelidir.

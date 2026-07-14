@@ -10,3 +10,7 @@
 - Rapor merkezi tamamlandı.
 - Favoriler ve son açılanlar eklendi.
 - Rapor yönetim ekranı ve filtreler eklendi.
+
+## V11.0-B.1
+- Portal navigasyonu düzeltildi.
+- Eski Cloudflare/tarayıcı önbelleğine karşı sürümlü dosya bağlantıları eklendi.

@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>ADG Insight V11.0-A</title>
-  <link rel="stylesheet" href="css/app.css">
+  <title>ADG Insight V11.0-B.1</title>
+  <link rel="stylesheet" href="css/app.css?v=11.0.1">
 </head>
 <body>
 <div class="app">
@@ -14,7 +14,7 @@
       <div><strong>ADG <em>Insight</em></strong><small>Veriyi karara dönüştür.</small></div>
     </div>
     <div class="top-actions">
-      <span id="sessionLabel" class="session hidden"></span>
+      <span class="build-badge">V11.0-B.1</span><span id="sessionLabel" class="session hidden"></span>
       <button id="profileBtn" class="btn hidden">Profilim</button>
       <button id="adminBtn" class="btn hidden">Yönetim</button>
       <button id="logoutBtn" class="btn hidden">Çıkış</button>
@@ -61,11 +61,11 @@
       <div class="workspace">
         <aside class="side">
           <div class="side-company"><div id="sideLogo" class="mini-logo">ADG</div><div><b id="sideCompany">Firma</b><small>Karar destek merkezi</small></div></div>
-          <button class="side-btn portal-nav active" data-portal-page="overview">Genel Bakış</button>
-          <button class="side-btn portal-nav" data-portal-page="reports">Raporlar</button>
-          <button class="side-btn portal-nav" data-portal-page="favorites">Favoriler</button>
-          <button class="side-btn portal-nav" data-portal-page="recent">Son Açılanlar</button>
-          <button id="changeCompanyBtn" class="side-btn bottom">← Firma Değiştir</button>
+          <button type="button" class="side-btn portal-nav active" data-portal-page="overview">Genel Bakış</button>
+          <button type="button" class="side-btn portal-nav" data-portal-page="reports">Raporlar</button>
+          <button type="button" class="side-btn portal-nav" data-portal-page="favorites">Favoriler</button>
+          <button type="button" class="side-btn portal-nav" data-portal-page="recent">Son Açılanlar</button>
+          <button type="button" id="changeCompanyBtn" class="side-btn bottom">← Firma Değiştir</button>
         </aside>
         <section class="content">
           <div class="dashboard-toolbar">
@@ -100,14 +100,14 @@
               <div class="stat"><b id="statRecent">0</b><span>Son Açılan</span></div>
             </div>
             <div class="panel">
-              <div class="section-head"><div><h3>Öne Çıkan Raporlar</h3><p>Favoriler ve son eklenen raporlar</p></div><button id="showAllReportsBtn" class="btn">Tümünü Gör</button></div>
+              <div class="section-head"><div><h3>Öne Çıkan Raporlar</h3><p>Favoriler ve son eklenen raporlar</p></div><button type="button" id="showAllReportsBtn" class="btn">Tümünü Gör</button></div>
               <div id="featuredReports" class="report-grid"></div>
             </div>
             <div class="panel"><h3>Firma Profili</h3><div id="companyProfile" class="profile-grid"></div></div>
           </div>
 
           <div id="portal-reports" class="portal-page">
-            <div class="section-head"><div><h3>Tüm Raporlar</h3><p>Firma raporlarını arayın, filtreleyin ve açın.</p></div><div class="view-switch"><button id="reportGridBtn" class="view-btn active">▦</button><button id="reportListBtn" class="view-btn">☷</button></div></div>
+            <div class="section-head"><div><h3>Tüm Raporlar</h3><p>Firma raporlarını arayın, filtreleyin ve açın.</p></div><div class="view-switch"><button type="button" id="reportGridBtn" class="view-btn active">▦</button><button type="button" id="reportListBtn" class="view-btn">☷</button></div></div>
             <div id="allReports" class="report-grid"></div>
           </div>
 
@@ -240,7 +240,7 @@
   </div>
 </div>
 
-<script src="js/storage.js"></script>
-<script src="js/app.js"></script>
+<script src="js/storage.js?v=11.0.1"></script>
+<script src="js/app.js?v=11.0.1"></script>
 </body>
 </html>

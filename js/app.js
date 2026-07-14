@@ -131,3 +131,16 @@ function editReport(companyId,reportId){const c=DATA.companies.find(x=>x.id===co
 function deleteReport(companyId,reportId){const c=DATA.companies.find(x=>x.id===companyId),r=c?.reports?.find(x=>x.id===reportId);if(!r||!confirm(`${r.title} silinsin mi?`))return;c.reports=c.reports.filter(x=>x.id!==reportId);REPORT_FAVORITES=REPORT_FAVORITES.filter(k=>k!==reportKey(companyId,reportId));REPORT_RECENT=REPORT_RECENT.filter(k=>k!==reportKey(companyId,reportId));saveReportPrefs();saveData();renderAdmin()}
 function renderReportTable(){const q=$("adminReportSearch").value.trim().toLowerCase(),filter=$("adminReportCompanyFilter").value;$("reportTable").innerHTML="";DATA.companies.forEach(c=>{if(filter&&c.id!==filter)return;(c.reports||[]).filter(r=>!q||[r.title,r.category,r.description].some(v=>String(v||"").toLowerCase().includes(q))).forEach(r=>{$("reportTable").insertAdjacentHTML("beforeend",`<tr><td><b>${esc(r.title)}</b><br><small>${esc(r.category)}</small></td><td>${esc(c.name)}</td><td>${esc(reportTypeInfo(r.type).label)}</td><td>${r.active!==false?"Aktif":"Pasif"}</td><td><button class="action" onclick="editReport('${c.id}','${r.id}')">Düzenle</button><button class="action danger" onclick="deleteReport('${c.id}','${r.id}')">Sil</button></td></tr>`)})})}
 $("adminReportSearch").oninput=renderReportTable;$("adminReportCompanyFilter").onchange=renderReportTable;
+
+/* V11.0-B.1: Portal menüsü için güvenli olay delegasyonu */
+document.addEventListener("click", event => {
+  const portalButton = event.target.closest("[data-portal-page]");
+  if (!portalButton) return;
+
+  event.preventDefault();
+  const page = portalButton.dataset.portalPage;
+  if (!["overview", "reports", "favorites", "recent"].includes(page)) return;
+
+  showPortalPage(page);
+  renderPortalReports();
+});

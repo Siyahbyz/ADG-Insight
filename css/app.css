@@ -13,3 +13,18 @@
 .dashboard-toolbar{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:22px}
 .dashboard-toolbar h2{font-size:34px;margin:7px 0 0}.dashboard-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.search-box{min-width:270px;height:43px;border:1px solid var(--line);border-radius:11px;background:#09182b;display:flex;align-items:center;gap:8px;padding:0 11px}.search-box span{color:var(--muted)}.search-box input{border:0;outline:0;background:transparent;color:#fff;width:100%}.input.compact{width:auto;min-width:145px;min-height:43px}.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:14px}.section-head h3{margin:0}.section-head p{margin:4px 0 0;color:var(--muted);font-size:11px}.report-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}.report-grid.list{grid-template-columns:1fr}.report-card{min-height:190px;border:1px solid var(--line);border-radius:16px;background:#0a1a2e;padding:17px;cursor:pointer;transition:.2s;position:relative}.report-card:hover{transform:translateY(-4px);border-color:rgba(75,226,210,.38)}.report-card-top{display:flex;justify-content:space-between;align-items:flex-start}.report-icon{width:45px;height:45px;border-radius:12px;display:grid;place-items:center;background:rgba(75,226,210,.1);border:1px solid rgba(75,226,210,.18);color:var(--cyan);font-size:10px;font-weight:900}.favorite{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:#09182b;color:#7890aa;cursor:pointer}.favorite.active{color:#ffd469}.report-card h4{font-size:16px;margin:19px 0 6px}.report-card p{font-size:10px;color:var(--muted);line-height:1.5;min-height:30px}.report-meta{display:flex;justify-content:space-between;margin-top:13px;padding-top:10px;border-top:1px solid rgba(255,255,255,.06);font-size:9px;color:var(--muted)}.report-grid.list .report-card{min-height:auto;display:grid;grid-template-columns:55px 1fr auto;gap:12px;align-items:center}.report-grid.list .report-card h4{margin:0 0 4px}.report-grid.list .report-meta{border:0;margin:0;padding:0;display:block;text-align:right}.empty-card{grid-column:1/-1;padding:30px;border:1px dashed var(--line);border-radius:14px;color:var(--muted);text-align:center}.view-switch{display:flex;gap:6px}.view-btn{width:38px;height:38px;border-radius:9px;border:1px solid var(--line);background:#09182b;color:#a7b9cf;cursor:pointer}.view-btn.active{color:var(--cyan);border-color:rgba(75,226,210,.4)}.table-tools{display:grid;grid-template-columns:1.4fr 1fr;gap:8px;margin-bottom:12px}
 @media(max-width:780px){.dashboard-toolbar{align-items:flex-start;flex-direction:column}.dashboard-actions{width:100%;display:grid;grid-template-columns:1fr}.search-box{min-width:0}.input.compact{width:100%}.table-tools{grid-template-columns:1fr}}
+
+.build-badge{
+  display:inline-flex;
+  align-items:center;
+  height:26px;
+  padding:0 9px;
+  border-radius:999px;
+  border:1px solid rgba(75,226,210,.28);
+  background:rgba(75,226,210,.08);
+  color:var(--cyan);
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.5px
+}
+.portal-nav{pointer-events:auto!important;position:relative;z-index:5}
