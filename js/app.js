@@ -1,129 +1,42 @@
-function escapeHtml(value){
-  return String(value ?? "").replace(/[&<>"']/g, character => ({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#39;"
-  }[character]));
-}
+const $=id=>document.getElementById(id);
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function showView(id){document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));$(id).classList.add("active")}
+function isAdmin(){return CURRENT_USER?.role==="system_admin"}
+function visibleCompanies(){return isAdmin()?DATA.companies:DATA.companies.filter(c=>(CURRENT_USER?.companyIds||[]).includes(c.id))}
+function setSession(){ $("sessionLabel").textContent=`${CURRENT_USER.name} · ${ROLES[CURRENT_USER.role].label}`; ["sessionLabel","profileBtn","logoutBtn"].forEach(id=>$(id).classList.remove("hidden")); $("adminBtn").classList.toggle("hidden",CURRENT_USER.role==="viewer")}
 
-function showScreen(id){
-  document.querySelectorAll(".screen").forEach(screen => screen.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-}
+$("loginForm").onsubmit=e=>{e.preventDefault();const email=$("loginEmail").value.trim().toLowerCase(),pw=$("loginPassword").value;const u=DATA.users.find(x=>x.email.toLowerCase()===email&&x.password===pw);if(!u){$("loginMessage").textContent="E-posta veya şifre hatalı.";return}CURRENT_USER=u;$("loginMessage").textContent="";setSession();renderCompanyCards();showView("companyView")};
+$("logoutBtn").onclick=()=>location.reload();
+$("changeCompanyBtn").onclick=()=>{SELECTED_COMPANY=null;renderCompanyCards();showView("companyView")};
+$("backPortalBtn").onclick=()=>{renderCompanyCards();showView("companyView")};
+$("adminBtn").onclick=()=>{if(CURRENT_USER.role==="viewer")return;renderAdmin();showView("adminView")};
 
-document.getElementById("loginForm").addEventListener("submit", event => {
-  event.preventDefault();
+function renderCompanyCards(){const wrap=$("companyCards"),items=visibleCompanies();wrap.innerHTML=items.length?"":'<div class="panel">Yetkili firma bulunmuyor.</div>';items.forEach(c=>{const card=document.createElement("article");card.className="company-card";const visual=c.logo?`<div class="logo"><img src="${esc(c.logo)}"></div>`:`<div class="fallback" style="background:${esc(c.color)}">${esc(c.shortName)}</div>`;card.innerHTML=`${visual}<h3>${esc(c.name)}</h3><p>${(c.reports||[]).length} rapor · ${(c.library||[]).length} kütüphane içeriği</p><span class="arrow">→</span>`;card.onclick=()=>openCompany(c.id);wrap.appendChild(card)})}
+function openCompany(id){SELECTED_COMPANY=DATA.companies.find(c=>c.id===id);if(!SELECTED_COMPANY)return;$("sideLogo").textContent=SELECTED_COMPANY.shortName;$("sideCompany").textContent=SELECTED_COMPANY.name;$("dashKicker").textContent=`${SELECTED_COMPANY.shortName} Dashboard`;$("dashHero").textContent=`${SELECTED_COMPANY.name} Karar Merkezi`;$("statReports").textContent=(SELECTED_COMPANY.reports||[]).length;$("statLibrary").textContent=(SELECTED_COMPANY.library||[]).length;$("statUsers").textContent=DATA.users.filter(u=>(u.companyIds||[]).includes(id)).length;const fields=[["Telefon",SELECTED_COMPANY.phone],["E-posta",SELECTED_COMPANY.email],["Web",SELECTED_COMPANY.website],["Adres",SELECTED_COMPANY.address]].filter(x=>x[1]);$("companyProfile").innerHTML=fields.length?fields.map(([l,v])=>`<div class="profile-item"><span>${l}</span><b>${esc(v)}</b></div>`).join(""):'<div class="profile-item"><span>Bilgi</span><b>Firma profil bilgileri henüz girilmedi.</b></div>';showView("dashboardView")}
 
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value;
-  const user = login(email, password);
+document.querySelectorAll(".admin-nav").forEach(b=>b.onclick=()=>{document.querySelectorAll(".admin-nav").forEach(x=>x.classList.remove("active"));b.classList.add("active");document.querySelectorAll(".admin-page").forEach(x=>x.classList.remove("active"));$("admin-"+b.dataset.page).classList.add("active")});
+function renderAdmin(){$("adminCompanyCount").textContent=DATA.companies.length;$("adminUserCount").textContent=DATA.users.length;renderCompanyTable();renderUserForm();renderUserTable();renderRoles()}
 
-  if (!user){
-    document.getElementById("loginMessage").textContent = "E-posta veya şifre hatalı.";
-    return;
-  }
+let logoData="";
+function clearCompanyForm(){logoData="";$("companyId").value="";$("companyName").value="";$("companyShort").value="";$("companyColor").value="#19b77d";$("companyPhone").value="";$("companyEmail").value="";$("companyWebsite").value="";$("companyAddress").value="";$("companyLogoUrl").value="";$("companyLogoFile").value="";$("logoPreview").innerHTML="Logo önizlemesi";$("companyFormTitle").textContent="Yeni Firma"}
+$("newCompanyBtn").onclick=clearCompanyForm;$("clearCompanyBtn").onclick=clearCompanyForm;
+$("companyLogoFile").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{logoData=r.result;$("companyLogoUrl").value="";$("logoPreview").innerHTML=`<img src="${esc(logoData)}">`};r.readAsDataURL(f)};
+$("companyLogoUrl").oninput=()=>{logoData="";const src=$("companyLogoUrl").value.trim();$("logoPreview").innerHTML=src?`<img src="${esc(src)}">`:"Logo önizlemesi"};
+$("companyForm").onsubmit=e=>{e.preventDefault();const id=$("companyId").value,name=$("companyName").value.trim();if(!name)return;const data={name,shortName:$("companyShort").value.trim().toUpperCase()||name.slice(0,3).toUpperCase(),color:$("companyColor").value,phone:$("companyPhone").value.trim(),email:$("companyEmail").value.trim(),website:$("companyWebsite").value.trim(),address:$("companyAddress").value.trim(),logo:logoData||$("companyLogoUrl").value.trim()};if(id){Object.assign(DATA.companies.find(c=>c.id===id),data)}else{const nid="c_"+Date.now();DATA.companies.push({id:nid,...data,reports:[],library:[]});DATA.users.filter(u=>u.role==="system_admin").forEach(u=>u.companyIds.push(nid))}saveData();clearCompanyForm();renderAdmin()};
+function editCompany(id){const c=DATA.companies.find(x=>x.id===id);$("companyId").value=c.id;$("companyName").value=c.name;$("companyShort").value=c.shortName;$("companyColor").value=c.color;$("companyPhone").value=c.phone||"";$("companyEmail").value=c.email||"";$("companyWebsite").value=c.website||"";$("companyAddress").value=c.address||"";logoData=c.logo?.startsWith("data:")?c.logo:"";$("companyLogoUrl").value=logoData?"":c.logo||"";$("logoPreview").innerHTML=c.logo?`<img src="${esc(c.logo)}">`:"Logo önizlemesi";$("companyFormTitle").textContent="Firmayı Düzenle"}
+function deleteCompany(id){const c=DATA.companies.find(x=>x.id===id);if(!confirm(`${c.name} silinsin mi?`))return;DATA.companies=DATA.companies.filter(x=>x.id!==id);DATA.users.forEach(u=>u.companyIds=(u.companyIds||[]).filter(x=>x!==id));saveData();renderAdmin()}
+function renderCompanyTable(){$("companyTable").innerHTML=DATA.companies.map(c=>`<tr><td><b>${esc(c.name)}</b><br><small>${esc(c.shortName)}</small></td><td>${esc(c.email||c.phone||"-")}</td><td><button class="action" onclick="editCompany('${c.id}')">Düzenle</button><button class="action danger" onclick="deleteCompany('${c.id}')">Sil</button></td></tr>`).join("")}
 
-  CURRENT_USER = user;
-  document.getElementById("loginMessage").textContent = "";
-  showSession();
-  renderPortal();
-  showScreen("portalScreen");
-});
+function renderUserForm(){const sel=$("userRole");sel.innerHTML=Object.entries(ROLES).filter(([k])=>isAdmin()||k!=="system_admin").map(([k,r])=>`<option value="${k}">${r.label}</option>`).join("");$("userCompanies").innerHTML=visibleCompanies().map(c=>`<label class="check"><input type="checkbox" value="${c.id}"> ${esc(c.name)}</label>`).join("")}
+function clearUserForm(){$("editingUser").value="";$("userName").value="";$("userEmail").value="";$("userEmail").disabled=false;$("userPassword").value="";$("userRole").value="viewer";$("userCompanies").querySelectorAll("input").forEach(x=>x.checked=false);$("userFormTitle").textContent="Yeni Kullanıcı"}
+$("newUserBtn").onclick=clearUserForm;$("clearUserBtn").onclick=clearUserForm;
+$("userForm").onsubmit=e=>{e.preventDefault();const editing=$("editingUser").value,name=$("userName").value.trim(),email=$("userEmail").value.trim().toLowerCase(),password=$("userPassword").value,role=$("userRole").value,companyIds=[...$("userCompanies").querySelectorAll("input:checked")].map(x=>x.value);if(!name||!email)return;if(editing){const u=DATA.users.find(x=>x.email===editing);u.name=name;u.role=role;u.companyIds=companyIds;if(password)u.password=password}else{if(password.length<6)return alert("Şifre en az 6 karakter olmalıdır.");if(DATA.users.some(x=>x.email===email))return alert("E-posta zaten kayıtlı.");DATA.users.push({name,email,password,role,companyIds})}saveData();clearUserForm();renderAdmin()};
+function editUser(email){const u=DATA.users.find(x=>x.email===email);$("editingUser").value=u.email;$("userName").value=u.name;$("userEmail").value=u.email;$("userEmail").disabled=true;$("userPassword").value="";$("userRole").value=u.role;$("userCompanies").querySelectorAll("input").forEach(x=>x.checked=u.companyIds.includes(x.value));$("userFormTitle").textContent="Kullanıcıyı Düzenle"}
+function deleteUser(email){const u=DATA.users.find(x=>x.email===email);if(u.role==="system_admin")return;if(!confirm(`${u.name} silinsin mi?`))return;DATA.users=DATA.users.filter(x=>x.email!==email);saveData();renderAdmin()}
+function renderUserTable(){$("userTable").innerHTML=DATA.users.map(u=>`<tr><td><b>${esc(u.name)}</b><br><small>${esc(u.email)}</small></td><td>${esc(ROLES[u.role].label)}</td><td>${esc((u.companyIds||[]).map(id=>DATA.companies.find(c=>c.id===id)?.shortName).filter(Boolean).join(", ")||"-")}</td><td><button class="action" onclick="editUser('${u.email}')">Düzenle</button>${u.role==="system_admin"?"":`<button class="action danger" onclick="deleteUser('${u.email}')">Sil</button>`}</td></tr>`).join("")}
+function renderRoles(){$("roleCards").innerHTML=Object.values(ROLES).map(r=>`<div class="role-card"><h3>${r.label}</h3><p>${r.description}</p><ul>${r.permissions.map(p=>`<li>${p}</li>`).join("")||"<li>Sadece görüntüleme</li>"}</ul></div>`).join("")}
 
-document.getElementById("logoutBtn").onclick = logout;
-document.getElementById("passwordBtn").onclick = openPasswordModal;
-document.getElementById("closePasswordBtn").onclick = closePasswordModal;
-document.getElementById("savePasswordBtn").onclick = changePassword;
-
-document.getElementById("adminBtn").onclick = () => {
-  if (CURRENT_USER.role === "viewer") return;
-  renderAllAdmin();
-  showScreen("adminScreen");
-};
-
-document.getElementById("portalReturnBtn").onclick = () => {
-  renderPortal();
-  showScreen("portalScreen");
-};
-
-document.querySelectorAll(".nav-btn[data-page]").forEach(button => {
-  button.onclick = () => {
-    if (button.classList.contains("permission-hidden")) return;
-    showAdminPage(button.dataset.page);
-  };
-});
-
-document.getElementById("newCompanyBtn").onclick = clearCompanyForm;
-document.getElementById("clearCompanyBtn").onclick = clearCompanyForm;
-document.getElementById("saveCompanyBtn").onclick = saveCompany;
-
-document.getElementById("newUserBtn").onclick = clearUserForm;
-document.getElementById("clearUserBtn").onclick = clearUserForm;
-document.getElementById("saveUserBtn").onclick = saveUser;
-document.getElementById("userRole").onchange = updateRoleHelp;
-
-document.getElementById("newReportBtn").onclick = clearReportForm;
-document.getElementById("clearReportBtn").onclick = clearReportForm;
-document.getElementById("saveReportBtn").onclick = saveReport;
-
-document.getElementById("exportBtn").onclick = () => {
-  const blob = new Blob([JSON.stringify(APP_DATA, null, 2)], {type:"application/json"});
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = "adg-insight-yedek.json";
-  link.click();
-  URL.revokeObjectURL(link.href);
-};
-
-document.getElementById("importBtn").onclick = async () => {
-  const file = document.getElementById("importFile").files[0];
-  if (!file) return alert("Bir yedek dosyası seçin.");
-
-  try{
-    const data = JSON.parse(await file.text());
-    if (!data.users || !data.companies || !data.roles) throw new Error("Geçersiz veri");
-    APP_DATA = data;
-    saveData();
-    renderAllAdmin();
-    alert("Yedek yüklendi.");
-  }catch(error){
-    alert("Geçersiz yedek dosyası.");
-  }
-};
-
+$("profileBtn").onclick=()=>{$("profileName").value=CURRENT_USER.name;$("oldPassword").value="";$("newPassword").value="";$("confirmPassword").value="";$("profileMessage").textContent="";$("profileModal").classList.add("active")};
+$("closeProfileBtn").onclick=()=>$("profileModal").classList.remove("active");
+$("saveProfileBtn").onclick=()=>{const name=$("profileName").value.trim(),old=$("oldPassword").value,nw=$("newPassword").value,cf=$("confirmPassword").value;CURRENT_USER.name=name||CURRENT_USER.name;if(nw){if(old!==CURRENT_USER.password){$("profileMessage").textContent="Mevcut şifre hatalı.";return}if(nw.length<6||nw!==cf){$("profileMessage").textContent="Yeni şifre en az 6 karakter olmalı ve tekrar ile eşleşmelidir.";return}CURRENT_USER.password=nw}saveData();setSession();$("profileMessage").style.color="#63e4b0";$("profileMessage").textContent="Profil güncellendi.";setTimeout(()=>$("profileModal").classList.remove("active"),700)};
 clearCompanyForm();
-renderRoleOptions();
-clearUserForm();
-clearReportForm();
-
-document.querySelectorAll(".portal-nav-btn").forEach(button => {
-  button.onclick = () => {
-    document.querySelectorAll(".portal-nav-btn").forEach(item => item.classList.remove("active"));
-    button.classList.add("active");
-    PORTAL_VIEW = button.dataset.portalView;
-    renderPortalContent();
-  };
-});
-
-document.getElementById("portalSearch").addEventListener("input", renderPortalContent);
-
-document.getElementById("gridViewBtn").onclick = () => {
-  PORTAL_GRID_MODE = "grid";
-  document.getElementById("gridViewBtn").classList.add("active");
-  document.getElementById("listViewBtn").classList.remove("active");
-  renderPortalContent();
-};
-
-document.getElementById("listViewBtn").onclick = () => {
-  PORTAL_GRID_MODE = "list";
-  document.getElementById("listViewBtn").classList.add("active");
-  document.getElementById("gridViewBtn").classList.remove("active");
-  renderPortalContent();
-};
-
-document.getElementById("changeCompanyBtn").onclick = showCompanySelection;
-document.getElementById("topChangeCompanyBtn").onclick = showCompanySelection;
-
-clearLibraryForm();

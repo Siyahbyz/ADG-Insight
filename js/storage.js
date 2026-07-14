@@ -1,81 +1,15 @@
-const STORAGE_KEY = "adgInsightV9";
-
-const DEFAULT_DATA = {
-  roles: {
-    system_admin: {
-      label: "Sistem Yöneticisi",
-      description: "Tüm firmaları, kullanıcıları ve raporları yönetebilir.",
-      permissions: ["dashboard","companies","users","reports","library","roles","backup"]
-    },
-    company_admin: {
-      label: "Firma Yöneticisi",
-      description: "Yetkili olduğu firmaların kullanıcılarını ve raporlarını yönetebilir.",
-      permissions: ["dashboard","users","reports","library"]
-    },
-    analyst: {
-      label: "Analist",
-      description: "Yetkili olduğu firmaların raporlarını yönetebilir.",
-      permissions: ["dashboard","reports","library"]
-    },
-    viewer: {
-      label: "Görüntüleyici",
-      description: "Yalnızca raporları görüntüleyebilir.",
-      permissions: []
-    }
-  },
-  users: [
-    {
-      name: "Yönetici",
-      email: "demo@adg.com",
-      password: "ADG2026",
-      role: "system_admin",
-      companyIds: ["adg"]
-    }
-  ],
-  companies: [
-    {
-      id: "adg",
-      name: "Anka Danışma Grubu",
-      shortName: "ADG",
-      color: "#19b77d",
-      logo: "",
-      taxNo: "",
-      taxOffice: "",
-      phone: "",
-      email: "",
-      website: "",
-      address: "",
-      active: true,
-      reports: [],
-      library: []
-    }
-  ]
+const KEY="adgInsightV11A";
+const ROLES={
+  system_admin:{label:"Sistem Yöneticisi",permissions:["companies","users","roles"],description:"Tüm firmaları ve kullanıcıları yönetir."},
+  company_admin:{label:"Firma Yöneticisi",permissions:["users"],description:"Yetkili olduğu firmaların kullanıcılarını yönetir."},
+  analyst:{label:"Analist",permissions:[],description:"Rapor ve analiz süreçlerinde çalışır."},
+  viewer:{label:"Görüntüleyici",permissions:[],description:"Kendisine tanımlı içerikleri görüntüler."}
 };
-
-let APP_DATA = loadData();
-let CURRENT_USER = null;
-
-function clone(value){
-  return JSON.parse(JSON.stringify(value));
-}
-
-function loadData(){
-  try{
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : clone(DEFAULT_DATA);
-  }catch(error){
-    console.error(error);
-    return clone(DEFAULT_DATA);
-  }
-}
-
-function saveData(){
-  try{
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(APP_DATA));
-    return true;
-  }catch(error){
-    alert("Veriler kaydedilemedi. Tarayıcı depolama alanı kapalı veya dolu olabilir.");
-    console.error(error);
-    return false;
-  }
-}
+const DEFAULT_DATA={
+  companies:[{id:"adg",name:"Anka Danışma Grubu",shortName:"ADG",color:"#19b77d",phone:"",email:"",website:"",address:"",logo:"",reports:[],library:[]}],
+  users:[{name:"Yönetici",email:"demo@adg.com",password:"ADG2026",role:"system_admin",companyIds:["adg"]}]
+};
+function clone(v){return JSON.parse(JSON.stringify(v))}
+function loadData(){try{return JSON.parse(localStorage.getItem(KEY))||clone(DEFAULT_DATA)}catch{return clone(DEFAULT_DATA)}}
+let DATA=loadData(),CURRENT_USER=null,SELECTED_COMPANY=null;
+function saveData(){localStorage.setItem(KEY,JSON.stringify(DATA))}
