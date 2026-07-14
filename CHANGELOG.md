@@ -14,3 +14,9 @@
 ## V11.0-B.1
 - Portal navigasyonu düzeltildi.
 - Eski Cloudflare/tarayıcı önbelleğine karşı sürümlü dosya bağlantıları eklendi.
+
+
+## V11.0-B.2
+- Rapor dosya yükleme sistemi eklendi.
+- Sürüm ve build etiketi standart hale getirildi.
+- Dosya açma, indirme ve değiştirme desteği eklendi.

@@ -28,7 +28,12 @@ function ensureDataShape(){
       type:r.type||"web",
       category:r.category||"Genel",
       order:Number.isFinite(Number(r.order))?Number(r.order):i,
-      active:r.active!==false
+      active:r.active!==false,
+      sourceMode:r.sourceMode||"url",
+      fileId:r.fileId||"",
+      fileName:r.fileName||"",
+      fileSize:r.fileSize||0,
+      fileMime:r.fileMime||""
     }));
   });
 }

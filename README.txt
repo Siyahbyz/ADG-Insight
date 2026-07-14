@@ -44,3 +44,13 @@ V11.0-B.1
 - Cache-busting parametreleri eklendi.
 - Üst çubukta sürüm rozeti gösterilir.
 - Doğru yayın kontrolü için ekranda V11.0-B.1 görünmelidir.
+
+
+V11.0-B.2
+- Üst çubukta sürüm ve build zamanı gösterilir.
+- Raporlar için URL veya Dosya Yükle seçeneği eklendi.
+- PDF, Excel, Word, PowerPoint, görsel ve video yüklenebilir.
+- Sürükle-bırak alanı eklendi.
+- Dosyalar aynı tarayıcıdaki IndexedDB alanında saklanır.
+- Dosya açma, indirme ve değiştirme işlevleri eklendi.
+- Geçici dosya sınırı 100 MB'dır.
