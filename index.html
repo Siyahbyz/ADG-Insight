@@ -61,27 +61,65 @@
       <div class="workspace">
         <aside class="side">
           <div class="side-company"><div id="sideLogo" class="mini-logo">ADG</div><div><b id="sideCompany">Firma</b><small>Karar destek merkezi</small></div></div>
-          <button class="side-btn active">Genel Bakış</button>
-          <button class="side-btn">Raporlar</button>
-          <button class="side-btn">Kütüphane</button>
-          <button class="side-btn">Favoriler</button>
+          <button class="side-btn portal-nav active" data-portal-page="overview">Genel Bakış</button>
+          <button class="side-btn portal-nav" data-portal-page="reports">Raporlar</button>
+          <button class="side-btn portal-nav" data-portal-page="favorites">Favoriler</button>
+          <button class="side-btn portal-nav" data-portal-page="recent">Son Açılanlar</button>
           <button id="changeCompanyBtn" class="side-btn bottom">← Firma Değiştir</button>
         </aside>
         <section class="content">
-          <div class="page-head">
-            <div><div id="dashKicker" class="kicker">Firma Dashboard</div><h2>Genel Bakış</h2></div>
+          <div class="dashboard-toolbar">
+            <div>
+              <div id="dashKicker" class="kicker">Firma Dashboard</div>
+              <h2 id="portalPageTitle">Genel Bakış</h2>
+            </div>
+            <div class="dashboard-actions">
+              <div class="search-box"><span>⌕</span><input id="reportSearch" placeholder="Rapor ara..."></div>
+              <select id="reportCategoryFilter" class="input compact">
+                <option value="">Tüm kategoriler</option>
+              </select>
+              <select id="reportTypeFilter" class="input compact">
+                <option value="">Tüm türler</option>
+                <option value="powerbi">Power BI</option>
+                <option value="web">Web</option>
+                <option value="pdf">PDF</option>
+                <option value="excel">Excel</option>
+              </select>
+            </div>
           </div>
-          <div class="hero-card">
-            <div><span>ADG INSIGHT</span><h3 id="dashHero">Karar Merkezi</h3><p>Raporlar ve kurumsal içerikler için merkezi çalışma alanı.</p></div>
-            <div class="bars"><i></i><i></i><i></i><i></i><i></i></div>
+
+          <div id="portal-overview" class="portal-page active">
+            <div class="hero-card">
+              <div><span>ADG INSIGHT</span><h3 id="dashHero">Karar Merkezi</h3><p>Raporlar ve kurumsal içerikler için merkezi çalışma alanı.</p></div>
+              <div class="bars"><i></i><i></i><i></i><i></i><i></i></div>
+            </div>
+            <div class="stats">
+              <div class="stat"><b id="statReports">0</b><span>Rapor</span></div>
+              <div class="stat"><b id="statUsers">0</b><span>Kullanıcı</span></div>
+              <div class="stat"><b id="statFavorites">0</b><span>Favori</span></div>
+              <div class="stat"><b id="statRecent">0</b><span>Son Açılan</span></div>
+            </div>
+            <div class="panel">
+              <div class="section-head"><div><h3>Öne Çıkan Raporlar</h3><p>Favoriler ve son eklenen raporlar</p></div><button id="showAllReportsBtn" class="btn">Tümünü Gör</button></div>
+              <div id="featuredReports" class="report-grid"></div>
+            </div>
+            <div class="panel"><h3>Firma Profili</h3><div id="companyProfile" class="profile-grid"></div></div>
           </div>
-          <div class="stats">
-            <div class="stat"><b id="statReports">0</b><span>Rapor</span></div>
-            <div class="stat"><b id="statUsers">0</b><span>Kullanıcı</span></div>
-            <div class="stat"><b id="statLibrary">0</b><span>Kütüphane İçeriği</span></div>
-            <div class="stat"><b>Aktif</b><span>Sistem Durumu</span></div>
+
+          <div id="portal-reports" class="portal-page">
+            <div class="section-head"><div><h3>Tüm Raporlar</h3><p>Firma raporlarını arayın, filtreleyin ve açın.</p></div><div class="view-switch"><button id="reportGridBtn" class="view-btn active">▦</button><button id="reportListBtn" class="view-btn">☷</button></div></div>
+            <div id="allReports" class="report-grid"></div>
           </div>
-          <div class="panel"><h3>Firma Profili</h3><div id="companyProfile" class="profile-grid"></div></div>
+
+          <div id="portal-favorites" class="portal-page">
+            <div class="section-head"><div><h3>Favoriler</h3><p>Hızlı erişim için işaretlediğiniz raporlar.</p></div></div>
+            <div id="favoriteReports" class="report-grid"></div>
+          </div>
+
+          <div id="portal-recent" class="portal-page">
+            <div class="section-head"><div><h3>Son Açılanlar</h3><p>Yakın zamanda görüntülediğiniz raporlar.</p></div></div>
+            <div id="recentReports" class="report-grid"></div>
+          </div>
         </section>
       </div>
     </section>
@@ -93,6 +131,7 @@
           <button class="side-btn admin-nav active" data-page="overview">Genel Bakış</button>
           <button class="side-btn admin-nav" data-page="companies">Firmalar</button>
           <button class="side-btn admin-nav" data-page="users">Kullanıcılar</button>
+          <button class="side-btn admin-nav" data-page="reports">Raporlar</button>
           <button class="side-btn admin-nav" data-page="roles">Roller</button>
           <button id="backPortalBtn" class="side-btn bottom">← Portala Dön</button>
         </aside>
@@ -141,6 +180,41 @@
                 <div class="actions"><button class="btn primary" type="submit">Kaydet</button><button id="clearUserBtn" class="btn" type="button">Temizle</button></div>
               </form>
               <div class="panel table-wrap"><table><thead><tr><th>Kullanıcı</th><th>Rol</th><th>Firmalar</th><th>İşlem</th></tr></thead><tbody id="userTable"></tbody></table></div>
+            </div>
+          </div>
+
+
+          <div id="admin-reports" class="admin-page">
+            <div class="page-head"><div><div class="kicker">Rapor Merkezi</div><h2>Raporlar</h2></div><button id="newReportBtn" class="btn primary">+ Yeni Rapor</button></div>
+            <div class="two-col">
+              <form id="reportForm" class="panel">
+                <h3 id="reportFormTitle">Yeni Rapor</h3>
+                <input id="reportEditKey" type="hidden">
+                <label>Firma</label><select id="reportCompany" class="input"></select>
+                <div class="form-row">
+                  <div><label>Rapor türü</label>
+                    <select id="reportType" class="input">
+                      <option value="powerbi">Power BI</option>
+                      <option value="web">Web Bağlantısı</option>
+                      <option value="pdf">PDF Bağlantısı</option>
+                      <option value="excel">Excel Bağlantısı</option>
+                    </select>
+                  </div>
+                  <div><label>Kategori</label><input id="reportCategory" class="input" placeholder="Finans, Satış..."></div>
+                </div>
+                <label>Başlık</label><input id="reportTitle" class="input" required>
+                <label>Açıklama</label><textarea id="reportDescription" class="input"></textarea>
+                <label>Bağlantı</label><input id="reportUrl" class="input" placeholder="https://..." required>
+                <div class="form-row">
+                  <div><label>Sıralama</label><input id="reportOrder" class="input" type="number" min="0" value="0"></div>
+                  <label class="check"><input id="reportActive" type="checkbox" checked> Aktif</label>
+                </div>
+                <div class="actions"><button class="btn primary" type="submit">Kaydet</button><button id="clearReportBtn" class="btn" type="button">Temizle</button></div>
+              </form>
+              <div class="panel table-wrap">
+                <div class="table-tools"><input id="adminReportSearch" class="input" placeholder="Rapor ara..."><select id="adminReportCompanyFilter" class="input"><option value="">Tüm firmalar</option></select></div>
+                <table><thead><tr><th>Rapor</th><th>Firma</th><th>Tür</th><th>Durum</th><th>İşlem</th></tr></thead><tbody id="reportTable"></tbody></table>
+              </div>
             </div>
           </div>
 

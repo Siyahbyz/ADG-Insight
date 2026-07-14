@@ -23,3 +23,18 @@ Sonraki sürüm: V11.0-B
 - Favoriler
 - Son açılanlar
 - Arama ve filtreleme
+
+
+Tamamlanan V11.0-B:
+- Firma bazlı rapor merkezi
+- Power BI, Web, PDF ve Excel bağlantı türleri
+- Kategori, arama ve tür filtresi
+- Kart ve liste görünümü
+- Favoriler
+- Son açılanlar
+- Yönetim panelinden rapor ekleme, düzenleme ve silme
+
+Sonraki sürüm: V11.0-C
+- Kurumsal kütüphane
+- Dosya yükleme
+- Dosya açma ve indirme
